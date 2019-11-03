@@ -1,4 +1,22 @@
-﻿<form method="post" asp-action="process" enctype="multipart/form-data">
+﻿@model EpicReader.Models.Home.IndexViewModel
+
+<form method="post" asp-action="process" enctype="multipart/form-data">
     <input type="file" name="file" />
     <input type="submit" />
 </form>
+
+<h1>Pliki w kolejce</h1>
+<ul>
+    @foreach (var file in Model.Queued)
+    {
+        <li>@file</li>
+    }
+</ul>
+
+<h1>Przetworzone</h1>
+<ul>
+    @foreach (var file in Model.Processed)
+    {
+        <li>@file</li>
+    }
+</ul>

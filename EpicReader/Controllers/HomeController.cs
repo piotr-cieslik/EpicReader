@@ -1,5 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 using EpicReader.Models;
+using EpicReader.Models.Home;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,19 +12,27 @@ namespace EpicReader.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly Queue _queue;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+            _queue = new Queue();
         }
 
         public IActionResult Index()
         {
-            return View();
+            var files = _queue.List();
+            var viewModel =
+                new IndexViewModel(
+                    files,
+                    Enumerable.Empty<string>());
+            return View(viewModel);
         }
 
-        public IActionResult Process(IFormFile file)
+        public async Task<IActionResult> Process(IFormFile file)
         {
+            await _queue.Put(file.FileName, file.OpenReadStream());
             return new EmptyResult();
         }
 

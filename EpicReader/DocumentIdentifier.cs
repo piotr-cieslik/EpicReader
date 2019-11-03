@@ -23,13 +23,13 @@ namespace EpicReader
         {
             var ticks = long.Parse(documentIdentifier.Substring(0, 20));
             var timestamp = new DateTime(ticks);
-            var fileName = documentIdentifier.Substring(21, documentIdentifier.Length - 21);
+            var fileName = documentIdentifier.Substring(20, documentIdentifier.Length - 20);
             return new DocumentIdentifier(timestamp, fileName);
         }
 
         public override string ToString()
         {
-            return $"{_timestamp.Ticks.ToString("D20")}-{_fileName}";
+            return $"{_timestamp.Ticks.ToString("D20")}{_fileName}";
         }
     }
 }

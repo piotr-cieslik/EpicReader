@@ -21,20 +21,20 @@ namespace EpicReader
                 new DocumentIdentifier(
                     DateTime.Now,
                     fileName);
-            var temporaryDocumentIdentifier =
-                new TemporaryDocumentIdentifier(documentIdentifier);
             await _storage.WriteFileAsync(
-                temporaryDocumentIdentifier.ToString(),
+                Storage.Directory.Temporary,
+                documentIdentifier.ToString(),
                 stream);
-            _storage.RenameFile(
-                temporaryDocumentIdentifier.ToString(),
-                documentIdentifier.ToString());
+            _storage.MoveFile(
+                documentIdentifier.ToString(),
+                Storage.Directory.Temporary,
+                Storage.Directory.Queued);
             return documentIdentifier;
         }
 
         public IEnumerable<DocumentIdentifier> QueuedDocuments()
         {
-            var filePaths = _storage.GetFiles();
+            var filePaths = _storage.GetFilesInDirectory(Storage.Directory.Queued);
             var fileNames = filePaths.Select(x => Path.GetFileName(x));
             var documentIdentifiers = fileNames.Select(x => DocumentIdentifier.Parse(x));
             return documentIdentifiers;

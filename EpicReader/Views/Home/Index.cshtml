@@ -7,24 +7,24 @@
 
 <h1>Kolejka</h1>
 <ul>
-    @foreach (var file in Model.Queued())
+    @foreach (var document in Model.Queued())
     {
-        <li>@file</li>
+        <li>@document</li>
     }
 </ul>
 
 <h1>Przetwarzane</h1>
 <ul>
-    @foreach (var file in Model.Processing())
+    @foreach (var document in Model.Processing())
     {
-        <li>@file</li>
+        <li>@document</li>
     }
 </ul>
 
 <h1>Przetworzone</h1>
 <ul>
-    @foreach (var file in Model.Processed())
+    @foreach (var document in Model.Processed())
     {
-    <li>@file</li>
+    <li><a href="@document.Url">@document.FileName</a></li>
     }
 </ul>

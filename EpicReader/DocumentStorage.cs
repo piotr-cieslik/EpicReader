@@ -50,6 +50,16 @@ namespace EpicReader
                 .ToArray();
         }
 
+        public async Task<byte[]> GetContentAsync(
+            Directory directory,
+            DocumentIdentifier documentIdentifier)
+        {
+            return await File.ReadAllBytesAsync(
+                PathOfFileInDirectory(
+                    documentIdentifier.ToString(),
+                    directory));
+        }
+
         private string PathOfFileInDirectory(string fileName, Directory directory)
         {
             return Path.Combine(PathOfDirectory(directory), fileName);

@@ -45,5 +45,12 @@ namespace EpicReader
         {
             return _storage.GetDocument(DocumentStorage.Directory.Processed);
         }
+
+        public async Task<string> ResultAsync(DocumentIdentifier documentIdentifier)
+        {
+            var bytes = await _storage.GetContentAsync(DocumentStorage.Directory.Result, documentIdentifier);
+            var text = System.Text.Encoding.UTF8.GetString(bytes);
+            return text;
+        }
     }
 }

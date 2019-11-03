@@ -28,7 +28,8 @@ namespace EpicReader.Controllers
                 new IndexViewModel(
                     queued,
                     processing,
-                    processed);
+                    processed,
+                    Url);
             return View(viewModel);
         }
 
@@ -36,6 +37,17 @@ namespace EpicReader.Controllers
         {
             await _queue.Put(file.FileName, file.OpenReadStream());
             return new EmptyResult();
+        }
+
+        public async Task<IActionResult> Result(string documentIdentifier)
+        {
+            var di = DocumentIdentifier.Parse(documentIdentifier);
+            var text = await _queue.ResultAsync(di);
+            var viewModel =
+                new ResultViewModel(
+                    di,
+                    text);
+            return View(viewModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

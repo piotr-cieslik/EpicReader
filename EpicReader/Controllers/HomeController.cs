@@ -22,10 +22,10 @@ namespace EpicReader.Controllers
 
         public IActionResult Index()
         {
-            var files = _queue.List();
+            var documentIdentifiers = _queue.QueuedDocuments();
             var viewModel =
                 new IndexViewModel(
-                    files,
+                    documentIdentifiers,
                     Enumerable.Empty<string>());
             return View(viewModel);
         }

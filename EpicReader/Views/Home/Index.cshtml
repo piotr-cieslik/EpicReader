@@ -5,9 +5,17 @@
     <input type="submit" />
 </form>
 
-<h1>Pliki w kolejce</h1>
+<h1>Kolejka</h1>
 <ul>
-    @foreach (var file in Model.Queued)
+    @foreach (var file in Model.Queued())
+    {
+        <li>@file</li>
+    }
+</ul>
+
+<h1>Przetwarzane</h1>
+<ul>
+    @foreach (var file in Model.Processing())
     {
         <li>@file</li>
     }
@@ -15,8 +23,8 @@
 
 <h1>Przetworzone</h1>
 <ul>
-    @foreach (var file in Model.Processed)
+    @foreach (var file in Model.Processed())
     {
-        <li>@file</li>
+    <li>@file</li>
     }
 </ul>

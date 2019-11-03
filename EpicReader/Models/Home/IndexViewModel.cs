@@ -5,16 +5,24 @@ namespace EpicReader.Models.Home
 {
     public sealed class IndexViewModel
     {
+        private readonly IEnumerable<DocumentIdentifier> _queued;
+        private readonly IEnumerable<DocumentIdentifier> _processing;
+        private readonly IEnumerable<DocumentIdentifier> _processed;
+
         public IndexViewModel(
             IEnumerable<DocumentIdentifier> queued,
-            IEnumerable<string> processed)
+            IEnumerable<DocumentIdentifier> processing,
+            IEnumerable<DocumentIdentifier> processed)
         {
-            Queued = queued.Select(x => x.FileName());
-            Processed = processed;
+            _queued = queued;
+            _processing = processing;
+            _processed = processed;
         }
 
-        public IEnumerable<string> Queued { get; }
+        public IEnumerable<string> Queued() => _queued.Select(x => x.FileName());
 
-        public IEnumerable<string> Processed { get; }
+        public IEnumerable<string> Processing() => _processing.Select(x => x.FileName());
+
+        public IEnumerable<string> Processed() => _processed.Select(x => x.FileName());
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 using EpicReader.Models;
 using EpicReader.Models.Home;
@@ -22,11 +21,14 @@ namespace EpicReader.Controllers
 
         public IActionResult Index()
         {
-            var documentIdentifiers = _queue.QueuedDocuments();
+            var queued = _queue.QueuedDocuments();
+            var processing = _queue.ProcessingDocuments();
+            var processed = _queue.ProcessedDocuments();
             var viewModel =
                 new IndexViewModel(
-                    documentIdentifiers,
-                    Enumerable.Empty<string>());
+                    queued,
+                    processing,
+                    processed);
             return View(viewModel);
         }
 

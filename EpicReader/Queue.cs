@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EpicReader
@@ -34,10 +33,17 @@ namespace EpicReader
 
         public IEnumerable<DocumentIdentifier> QueuedDocuments()
         {
-            var filePaths = _storage.GetDocument(DocumentStorage.Directory.Queued);
-            var fileNames = filePaths.Select(x => Path.GetFileName(x));
-            var documentIdentifiers = fileNames.Select(x => DocumentIdentifier.Parse(x));
-            return documentIdentifiers;
+            return _storage.GetDocument(DocumentStorage.Directory.Queued);
+        }
+
+        public IEnumerable<DocumentIdentifier> ProcessingDocuments()
+        {
+            return _storage.GetDocument(DocumentStorage.Directory.Processing);
+        }
+
+        public IEnumerable<DocumentIdentifier> ProcessedDocuments()
+        {
+            return _storage.GetDocument(DocumentStorage.Directory.Processed);
         }
     }
 }

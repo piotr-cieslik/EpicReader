@@ -45,6 +45,7 @@ namespace EpicReader
         public IReadOnlyCollection<DocumentIdentifier> GetDocument(Directory directory)
         {
             return System.IO.Directory.GetFiles(PathOfDirectory(directory))
+                .Select(x => Path.GetFileName(x))
                 .Select(x => DocumentIdentifier.Parse(x))
                 .ToArray();
         }

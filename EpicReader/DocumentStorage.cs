@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace EpicReader
 {
-    internal sealed class Storage
+    internal sealed class DocumentStorage
     {
         private readonly string _root;
 
-        public Storage()
+        public DocumentStorage()
         {
             const string appFolder = "epic-reader";
             _root = Path.Combine(Path.GetTempPath(), appFolder);
@@ -21,27 +21,32 @@ namespace EpicReader
             }
         }
 
-        public async Task WriteFileAsync(
+        public async Task WriteDocumentAsync(
             Directory directory,
-            string fileName,
+            DocumentIdentifier documentIdentifier,
             Stream stream)
         {
-            var filePath = PathOfFileInDirectory(fileName, directory);
+            var filePath = PathOfFileInDirectory(documentIdentifier.ToString(), directory);
             using var fileStream = File.Create(filePath);
             await stream.CopyToAsync(fileStream);
             fileStream.Close();
         }
 
-        public void MoveFile(string fileName, Directory source, Directory target)
+        public void MoveDocument(
+            DocumentIdentifier documentIdentifier,
+            Directory source,
+            Directory target)
         {
-            var oldPath = PathOfFileInDirectory(fileName, source);
-            var newPath = PathOfFileInDirectory(fileName, target);
+            var oldPath = PathOfFileInDirectory(documentIdentifier.ToString(), source);
+            var newPath = PathOfFileInDirectory(documentIdentifier.ToString(), target);
             File.Move(oldPath, newPath);
         }
 
-        public IReadOnlyCollection<string> GetFilesInDirectory(Directory directory)
+        public IReadOnlyCollection<DocumentIdentifier> GetDocument(Directory directory)
         {
-            return System.IO.Directory.GetFiles(PathOfDirectory(directory));
+            return System.IO.Directory.GetFiles(PathOfDirectory(directory))
+                .Select(x => DocumentIdentifier.Parse(x))
+                .ToArray();
         }
 
         private string PathOfFileInDirectory(string fileName, Directory directory)

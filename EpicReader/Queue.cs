@@ -8,11 +8,11 @@ namespace EpicReader
 {
     internal sealed class Queue
     {
-        private Storage _storage;
+        private DocumentStorage _storage;
 
         public Queue()
         {
-            _storage = new Storage();
+            _storage = new DocumentStorage();
         }
 
         public async Task<DocumentIdentifier> Put(string fileName, Stream stream)
@@ -21,20 +21,20 @@ namespace EpicReader
                 new DocumentIdentifier(
                     DateTime.Now,
                     fileName);
-            await _storage.WriteFileAsync(
-                Storage.Directory.Temporary,
-                documentIdentifier.ToString(),
+            await _storage.WriteDocumentAsync(
+                DocumentStorage.Directory.Temporary,
+                documentIdentifier,
                 stream);
-            _storage.MoveFile(
-                documentIdentifier.ToString(),
-                Storage.Directory.Temporary,
-                Storage.Directory.Queued);
+            _storage.MoveDocument(
+                documentIdentifier,
+                DocumentStorage.Directory.Temporary,
+                DocumentStorage.Directory.Queued);
             return documentIdentifier;
         }
 
         public IEnumerable<DocumentIdentifier> QueuedDocuments()
         {
-            var filePaths = _storage.GetFilesInDirectory(Storage.Directory.Queued);
+            var filePaths = _storage.GetDocument(DocumentStorage.Directory.Queued);
             var fileNames = filePaths.Select(x => Path.GetFileName(x));
             var documentIdentifiers = fileNames.Select(x => DocumentIdentifier.Parse(x));
             return documentIdentifiers;

@@ -21,6 +21,14 @@ namespace EpicReader
             _fileName = fileName;
         }
 
+        public DocumentName(string value)
+            : this(
+                  new Timestamp(long.Parse(value.Substring(0, 10))),
+                  new Guid(value.Substring(11, 32)),
+                  new FileName(value.Substring(44, value.Length - 44)))
+        {
+        }
+
         public override bool Equals(object obj)
         {
             return Equals(obj as DocumentName);

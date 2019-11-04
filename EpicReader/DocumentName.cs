@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace EpicReader
 {
     public sealed class DocumentName
+        : IEquatable<DocumentName>
     {
         private readonly Timestamp _timestamp;
         private readonly Guid _guid;
@@ -18,6 +21,27 @@ namespace EpicReader
             _fileName = fileName;
         }
 
-        public override string ToString() => $"{_timestamp.ToString()}_{_guid.ToString().Replace("-", string.Empty)}_{_fileName}";
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as DocumentName);
+        }
+
+        public bool Equals([AllowNull] DocumentName other)
+        {
+            return other != null &&
+                   EqualityComparer<Timestamp>.Default.Equals(_timestamp, other._timestamp) &&
+                   _guid.Equals(other._guid) &&
+                   EqualityComparer<FileName>.Default.Equals(_fileName, other._fileName);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_timestamp, _guid, _fileName);
+        }
+
+        public override string ToString()
+        {
+            return $"{_timestamp.ToString()}_{_guid.ToString().Replace("-", string.Empty)}_{_fileName}";
+        }
     }
 }

@@ -29,6 +29,8 @@ namespace EpicReader
         {
         }
 
+        public string FileName() => _fileName.ToString();
+
         public override bool Equals(object obj)
         {
             return Equals(obj as DocumentName);

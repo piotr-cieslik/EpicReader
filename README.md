@@ -16,13 +16,20 @@ Struktura katalogów:
 # Proces odczytu dokumentu
 TODO
 
-# Nazewnictwo dokumentów
-Maksymalna nazwa pojedynczego pliku przekazywanego do systemu może wynosić 200 znaków. W teorii Linux radzi sobie z nazwami do 255 znaków, jednak 55 znaków jest zarezerwowane na specjalne potrzeby aplikacji.
+# Wewnętrzne nazewnictwo dokumentów
+Nazwa dokumentu składa się z nazwy przekazanego pliku oraz informacji dodatkowych wygenerowanych przez program.
 
-{timestamp}_{guid}_{filename with extension}
+Maksymalna nazwa pojedynczego pliku przekazywanego do systemu może wynosić 200 znaków. System Linux radzi sobie z nazwami plików do 255 znaków, jednak 55 znaków jest zarezerwowane na specjalne potrzeby aplikacji.
 
-Timestamp - 10 znakowy ciąg reprezentujący liczbę sekund od 1970-01-01 (system Linuxowy). Obsługiwane są wartości z zakresu od 0000000000 do 9999999999.
-Guid - 32 znakowy GUID, bez myślników rozdzielających wartości.
+Format nazewnictwa dokumentów:
+ 
+ `{timestamp}_{guid}_{file name}.{extension}`
+
+Gdzie:
+- `{timestamp}` - to 10 znakowy ciąg reprezentujący liczbę sekund od 1970-01-01 (system Linuxowy). Obsługiwane są wartości z zakresu od 0000000000 do 9999999999.
+- `{guid}` - to 32 znakowy GUID, zapisany bez myślników rozdzielających wartości.
+- `{file name}` - to oryginalna nazwa pliku.
+- `{extension}` - to oryginalne rozszerzenie pliku.
 
 Rezerwacja 55 znaków na potrzeby aplikacji jest zdefiniowana z pewnym buforem, ponieważ faktycznie aplikacja potrzebuje 49 znaków dodatkowych, aby poprawnie nazwać dokumenty na dysku. 44 znaki zarezerwowane są na prefix dokumentu, 5 znaków zarezerwowanych jest na rozszerzenie .json, dla plików z wynikami.
 

@@ -6,15 +6,15 @@ namespace EpicReader.Models.Home
 {
     public sealed class IndexViewModel
     {
-        private readonly IEnumerable<DocumentIdentifier> _queued;
-        private readonly IEnumerable<DocumentIdentifier> _processing;
-        private readonly IEnumerable<DocumentIdentifier> _processed;
+        private readonly IEnumerable<DocumentName> _queued;
+        private readonly IEnumerable<DocumentName> _processing;
+        private readonly IEnumerable<DocumentName> _processed;
         private readonly IUrlHelper _url;
 
         public IndexViewModel(
-            IEnumerable<DocumentIdentifier> queued,
-            IEnumerable<DocumentIdentifier> processing,
-            IEnumerable<DocumentIdentifier> processed,
+            IEnumerable<DocumentName> queued,
+            IEnumerable<DocumentName> processing,
+            IEnumerable<DocumentName> processed,
             IUrlHelper url)
         {
             _queued = queued;

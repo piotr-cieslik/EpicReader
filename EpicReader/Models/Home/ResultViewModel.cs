@@ -2,16 +2,16 @@
 {
     public class ResultViewModel
     {
-        private readonly DocumentIdentifier _documentIdentifier;
+        private readonly DocumentName _documentName;
         private readonly string _text;
 
-        public ResultViewModel(DocumentIdentifier documentIdentifier, string text)
+        public ResultViewModel(DocumentName documentName, string text)
         {
-            _documentIdentifier = documentIdentifier;
+            _documentName = documentName;
             _text = text;
         }
 
-        public string FileName() => _documentIdentifier.FileName();
+        public string FileName() => _documentName.FileName();
 
         public string Text() => _text;
     }

@@ -23,40 +23,40 @@ namespace EpicReader
 
         public async Task WriteDocumentAsync(
             Directory directory,
-            DocumentIdentifier documentIdentifier,
+            DocumentName documentName,
             Stream stream)
         {
-            var filePath = PathOfFileInDirectory(documentIdentifier.ToString(), directory);
+            var filePath = PathOfFileInDirectory(documentName.ToString(), directory);
             using var fileStream = File.Create(filePath);
             await stream.CopyToAsync(fileStream);
             fileStream.Close();
         }
 
         public void MoveDocument(
-            DocumentIdentifier documentIdentifier,
+            DocumentName documentName,
             Directory source,
             Directory target)
         {
-            var oldPath = PathOfFileInDirectory(documentIdentifier.ToString(), source);
-            var newPath = PathOfFileInDirectory(documentIdentifier.ToString(), target);
+            var oldPath = PathOfFileInDirectory(documentName.ToString(), source);
+            var newPath = PathOfFileInDirectory(documentName.ToString(), target);
             File.Move(oldPath, newPath);
         }
 
-        public IReadOnlyCollection<DocumentIdentifier> GetDocument(Directory directory)
+        public IReadOnlyCollection<DocumentName> GetDocument(Directory directory)
         {
             return System.IO.Directory.GetFiles(PathOfDirectory(directory))
                 .Select(x => Path.GetFileName(x))
-                .Select(x => DocumentIdentifier.Parse(x))
+                .Select(x => new DocumentName(x))
                 .ToArray();
         }
 
         public async Task<byte[]> GetContentAsync(
             Directory directory,
-            DocumentIdentifier documentIdentifier)
+            DocumentName documentName)
         {
             return await File.ReadAllBytesAsync(
                 PathOfFileInDirectory(
-                    documentIdentifier.ToString(),
+                    documentName.ToString(),
                     directory));
         }
 

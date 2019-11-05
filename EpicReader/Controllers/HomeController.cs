@@ -39,13 +39,14 @@ namespace EpicReader.Controllers
             return new EmptyResult();
         }
 
-        public async Task<IActionResult> Result(string documentIdentifier)
+        public async Task<IActionResult> Result(string documentName)
         {
-            var di = DocumentIdentifier.Parse(documentIdentifier);
-            var text = await _queue.ResultAsync(di);
+            var text =
+                await _queue.ResultAsync(
+                    new DocumentName(documentName));
             var viewModel =
                 new ResultViewModel(
-                    di,
+                    new DocumentName(documentName),
                     text);
             return View(viewModel);
         }

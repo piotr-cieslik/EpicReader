@@ -32,7 +32,7 @@ namespace EpicReader.Models.Home
                 x => new
                 {
                     FileName = x.FileName(),
-                    Url = _url.Action("Result", null, new { documentIdentifier = x.ToString() }),
+                    Url = _url.Action("Result", null, new { documentName = x.ToString() }),
                 })
             .Select(x => (x.FileName, x.Url));
     }

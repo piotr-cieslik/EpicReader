@@ -3,16 +3,16 @@
     public class ResultViewModel
     {
         private readonly DocumentName _documentName;
-        private readonly string _text;
+        private readonly Result _result;
 
-        public ResultViewModel(DocumentName documentName, string text)
+        public ResultViewModel(DocumentName documentName, Result result)
         {
             _documentName = documentName;
-            _text = text;
+            _result = result;
         }
 
         public string FileName() => _documentName.FileName();
 
-        public string Text() => _text;
+        public string Text() => _result.Text;
     }
 }

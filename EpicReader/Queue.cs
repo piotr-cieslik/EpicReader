@@ -7,11 +7,11 @@ namespace EpicReader
 {
     internal sealed class Queue
     {
-        private DocumentStorage _storage;
+        private readonly DocumentStorage _documentStorage;
 
-        public Queue()
+        public Queue(DocumentStorage documentStorage)
         {
-            _storage = new DocumentStorage();
+            _documentStorage = documentStorage;
         }
 
         public async Task<DocumentName> Put(string fileName, Stream stream)
@@ -21,11 +21,11 @@ namespace EpicReader
                     new Timestamp(DateTime.Now),
                     Guid.NewGuid(),
                     new FileName(fileName));
-            await _storage.WriteDocumentAsync(
+            await _documentStorage.WriteDocumentAsync(
                 DocumentStorage.Directory.Temporary,
                 documentName,
                 stream);
-            _storage.MoveDocument(
+            _documentStorage.MoveDocument(
                 documentName,
                 DocumentStorage.Directory.Temporary,
                 DocumentStorage.Directory.Queued);
@@ -34,24 +34,17 @@ namespace EpicReader
 
         public IEnumerable<DocumentName> QueuedDocuments()
         {
-            return _storage.GetDocumentNames(DocumentStorage.Directory.Queued);
+            return _documentStorage.GetDocumentNames(DocumentStorage.Directory.Queued);
         }
 
         public IEnumerable<DocumentName> ProcessingDocuments()
         {
-            return _storage.GetDocumentNames(DocumentStorage.Directory.Processing);
+            return _documentStorage.GetDocumentNames(DocumentStorage.Directory.Processing);
         }
 
         public IEnumerable<DocumentName> ProcessedDocuments()
         {
-            return _storage.GetDocumentNames(DocumentStorage.Directory.Processed);
-        }
-
-        public async Task<string> ResultAsync(DocumentName documentName)
-        {
-            var bytes = await _storage.GetContentAsync(DocumentStorage.Directory.Result, documentName);
-            var text = System.Text.Encoding.UTF8.GetString(bytes);
-            return text;
+            return _documentStorage.GetDocumentNames(DocumentStorage.Directory.Processed);
         }
     }
 }

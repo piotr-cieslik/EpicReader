@@ -11,12 +11,14 @@ namespace EpicReader.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly DocumentStorage _documentStorage;
         private readonly Queue _queue;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _queue = new Queue();
+            _documentStorage = new DocumentStorage();
+            _queue = new Queue(_documentStorage);
         }
 
         public IActionResult Index()
@@ -41,13 +43,13 @@ namespace EpicReader.Controllers
 
         public async Task<IActionResult> Result(string documentName)
         {
-            var text =
-                await _queue.ResultAsync(
+            var result =
+                await _documentStorage.GetResultAsync(
                     new DocumentName(documentName));
             var viewModel =
                 new ResultViewModel(
                     new DocumentName(documentName),
-                    text);
+                    result);
             return View(viewModel);
         }
 

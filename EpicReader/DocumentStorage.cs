@@ -50,14 +50,20 @@ namespace EpicReader
                 .ToArray();
         }
 
-        public async Task<byte[]> GetContentAsync(
-            Directory directory,
-            DocumentName documentName)
+        public async Task<Result> GetResultAsync(DocumentName documentName)
         {
-            return await File.ReadAllBytesAsync(
-                PathOfFileInDirectory(
-                    documentName.ToString(),
-                    directory));
+            var result =
+                await File.ReadAllTextAsync(
+                    PathOfFileInDirectory(
+                        documentName.ToString() + ".json",
+                        Directory.Result));
+            var serializableResult =
+                System.Text.Json.JsonSerializer.Deserialize<SerializableResult>(result);
+            return new Result(
+                serializableResult.status,
+                serializableResult.text,
+                DateTimeOffset.FromUnixTimeSeconds(serializableResult.processingStartTime).UtcDateTime,
+                DateTimeOffset.FromUnixTimeSeconds(serializableResult.processingEndTime).UtcDateTime);
         }
 
         private string PathOfFileInDirectory(string fileName, Directory directory)
@@ -90,6 +96,17 @@ namespace EpicReader
             Processing,
             Processed,
             Result,
+        }
+
+        public sealed class SerializableResult
+        {
+            public string status { get; set; }
+
+            public string text { get; set; }
+
+            public long processingStartTime { get; set; }
+
+            public long processingEndTime { get; set; }
         }
     }
 }

@@ -34,17 +34,17 @@ namespace EpicReader
 
         public IEnumerable<DocumentName> QueuedDocuments()
         {
-            return _storage.GetDocument(DocumentStorage.Directory.Queued);
+            return _storage.GetDocumentNames(DocumentStorage.Directory.Queued);
         }
 
         public IEnumerable<DocumentName> ProcessingDocuments()
         {
-            return _storage.GetDocument(DocumentStorage.Directory.Processing);
+            return _storage.GetDocumentNames(DocumentStorage.Directory.Processing);
         }
 
         public IEnumerable<DocumentName> ProcessedDocuments()
         {
-            return _storage.GetDocument(DocumentStorage.Directory.Processed);
+            return _storage.GetDocumentNames(DocumentStorage.Directory.Processed);
         }
 
         public async Task<string> ResultAsync(DocumentName documentName)

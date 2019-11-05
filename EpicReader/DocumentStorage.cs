@@ -42,7 +42,7 @@ namespace EpicReader
             File.Move(oldPath, newPath);
         }
 
-        public IReadOnlyCollection<DocumentName> GetDocument(Directory directory)
+        public IReadOnlyCollection<DocumentName> GetDocumentNames(Directory directory)
         {
             return System.IO.Directory.GetFiles(PathOfDirectory(directory))
                 .Select(x => Path.GetFileName(x))

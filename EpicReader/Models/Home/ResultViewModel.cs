@@ -14,5 +14,7 @@
         public string FileName() => _documentName.FileName();
 
         public string Text() => _result.Text;
+
+        public string ProcessingTime() => ((int)(_result.ProcessingEndTime - _result.ProcessingStartTime).TotalSeconds).ToString();
     }
 }

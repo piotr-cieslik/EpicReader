@@ -1,4 +1,5 @@
 ﻿@model EpicReader.Models.Home.ResultViewModel
 
-<h1>@Model.FileName()</h1>
+<p>Plik @Model.FileName(), przetworzono w @Model.ProcessingTime() sekund</p>
+<hr />
 <pre>@Model.Text()</pre>

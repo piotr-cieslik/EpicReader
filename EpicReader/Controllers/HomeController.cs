@@ -36,7 +36,7 @@ namespace EpicReader.Controllers
         public async Task<IActionResult> Process(IFormFile file)
         {
             await _queue.Put(file.FileName, file.OpenReadStream());
-            return new EmptyResult();
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Result(string documentName)
